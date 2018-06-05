@@ -3,7 +3,7 @@ import { _ } from "underscore";
 import { inspect } from "util";
 
 
-function caminos(grafo, s, p) {
+function camino(grafo, s, p) {
     let adyacentes = grafo.adyacentes(s);
     let current = s;
     let result = [];
@@ -17,4 +17,4 @@ function caminos(grafo, s, p) {
     return result;
 }
 
-export { caminos };
+export { camino };
