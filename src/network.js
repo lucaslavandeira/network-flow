@@ -4,31 +4,16 @@ import { inspect } from "util";
 
 
 function caminos(grafo, s, p) {
-    let rev_adj = grafo.borrarNodo(p);
-    let bfs = Grafo.bfs(grafo, s);
-    _.each(rev_adj, (nodo) => {
-        bfs.agregarArista(nodo, p, '1');
-    })
-
-    console.log(inspect(bfs, false, null));
-
-    let adyacentes = bfs.adyacentes(s);
+    let adyacentes = grafo.adyacentes(s);
+    let current = s;
     let result = [];
-    _.each(bfs.adyacentes(s), (adj) => {
-        result.push([s].concat(caminos_in(bfs, adj, p)));
-    })
-    return result;
-}
 
-function caminos_in(grafo, nodo, final) {
-    console.log("llamo caminos con nodo " + nodo + " y final " + final);
-    if (nodo === final) {
-        return [final];
+    while (adyacentes.length) {
+        result.push(current);
+        current = adyacentes[0];
+        adyacentes = grafo.adyacentes(adyacentes[0]);
     }
-
-    let result = [];
-    _.each(grafo.adyacentes(nodo), 
-        (adj) => result.concat([nodo].concat(caminos_in(grafo, adj, final))));
+    result.push(current);
     return result;
 }
 

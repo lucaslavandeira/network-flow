@@ -47,7 +47,6 @@ class Grafo {
         if (!visitados.length) {
             visitados.push(actual);
         }
-        console.log("Llamo BFS, inicio: " + actual + ", visitados: ", visitados.toString());
         
         let adjyacentes = _.filter(grafo.aristas[actual], 
             (nodo) => !_.contains(visitados, nodo.destino));
