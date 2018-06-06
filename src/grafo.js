@@ -60,6 +60,29 @@ class Grafo {
         );
         return result;
     }
+
+    camino(desde, hasta) {
+        let padres = {}
+        padres[desde] = null;
+
+        this._fill_parents(desde, padres);
+        
+        let result = [hasta];
+        let actual = hasta;
+        while (result[0] !== desde) {
+            actual = padres[actual];
+            result.unshift(actual)
+        }
+        return result;
+    }
+
+    _fill_parents(nodo, padres) {
+        let adyacentes = this.adyacentes(nodo);
+        adyacentes.forEach(element => {
+            padres[element] = nodo;
+            this._fill_parents(element, padres);
+        });
+    }
 }
 
 const _Grafo = Grafo;

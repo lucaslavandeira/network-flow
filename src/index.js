@@ -1,7 +1,6 @@
 import { createServer } from "http";
 import { readInputFile } from "./read_input";
 import { Grafo } from "./grafo";
-import { caminos } from "./network";
 import { inspect } from "util";
 
 const hostname = '127.0.0.1';
@@ -18,6 +17,6 @@ const server = createServer((req, res) => {
 
 let g = readInputFile('input');
 
-let paths = caminos(g, '1', '5');
+let paths = g.camino('1', '5');
 
 console.log(inspect(paths, false, null));
