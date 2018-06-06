@@ -18,6 +18,16 @@ describe("Camino", () => {
         assert.equal(path[0], "1");
         assert.equal(path[2], "4");
     })
+
+    it("Halla el camino en un grafo más complejo", () => {
+        let g = readInputFile("test/inputs/grafo_mas_complejo");
+        let path = g.camino("1", "7");
+
+        assert.equal(path.length, 5);
+        assert.equal(path[0], "1");
+        assert.equal(path[4], "7");
+
+    })
 });
 
 function list_assert(expected, actual) {
