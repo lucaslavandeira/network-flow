@@ -4,7 +4,7 @@ class Grafo {
         this.aristas = {};
     }
 
-    agregarArista(nodo1, nodo2, peso) {
+    agregarArista(nodo1, nodo2, peso=1) {
         if (!this.aristas[nodo1]) {
             this.aristas[nodo1] = []
         }

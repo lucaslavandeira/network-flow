@@ -32,4 +32,14 @@ describe("Grafo", () => {
         grafo.agregarArista(1, 2, peso);
         assert.equal(peso, grafo.peso(1, 2));
     });
+
+    it("Devuelve el camino en un grafo cíclico correctamente", () => {
+        let grafo = new Grafo();
+        grafo.agregarArista(1, 2);
+        grafo.agregarArista(2, 1);
+        grafo.agregarArista(2, 3);
+
+        let camino = grafo.camino(1, 3);
+        assert.equal(camino.length, 3);
+    });
 });
