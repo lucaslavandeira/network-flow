@@ -56,4 +56,4 @@ describe("Utils de redes de flujo", () => {
         assert.equal(residual.peso('4', '3'), max_flow);
 
     });
-})
+});

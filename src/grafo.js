@@ -33,10 +33,15 @@ class Grafo {
 
     camino(desde, hasta) {
         let padres = {}
-        padres[desde] = null;
 
         this._fill_parents(desde, padres);
         
+        // Si no hay adyacentes, no hay camino
+        if (Object.keys(padres).length === 0) {
+            return [];
+        }
+        
+        padres[desde] = null;
         let result = [hasta];
         let actual = hasta;
         while (result[0] !== desde) {
@@ -48,12 +53,17 @@ class Grafo {
 
     _fill_parents(nodo, padres) {
         let adyacentes = this.adyacentes(nodo);
-        adyacentes.forEach(element => {
+        for(let i = 0; i < adyacentes.length; i++) {
+            const element = adyacentes[i];
+            if (this.peso(nodo, element) === 0) {
+                continue;
+            }
+        
             if (!padres.hasOwnProperty(element)) {
                 padres[element] = nodo;
                 this._fill_parents(element, padres);
             }
-        });
+        }
     }
 
     peso(desde, hasta) {

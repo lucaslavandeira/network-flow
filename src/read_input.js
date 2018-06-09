@@ -19,7 +19,7 @@ function parseInputLine(line, grafo) {
     }
     let nodo1 = values[0];
     let nodo2 = values[1];
-    let peso = values[2];
+    let peso = parseInt(values[2]);
     grafo.agregarArista(nodo1, nodo2, peso);
 }
 export { readInputFile };
