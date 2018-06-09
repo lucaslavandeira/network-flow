@@ -1,5 +1,3 @@
-import { _ } from "underscore";
-
 class Grafo {
 
     constructor() {
@@ -12,11 +10,11 @@ class Grafo {
     }
 
     agregarArista(nodo1, nodo2, peso) {
-        if (!_.contains(this.nodos, nodo1)) {
+        if (!this.nodos.includes(nodo1)) {
             this.nodos.push(nodo1);
         }
 
-        if (!_.contains(this.nodos, nodo2)) {
+        if (!this.nodos.includes(nodo2)) {
             this.nodos.push(nodo2);
         }
 
@@ -27,7 +25,10 @@ class Grafo {
     }
 
     adyacentes(nodo) {
-        return _.map(this.aristas[nodo], (nodo) => nodo.destino);
+        if (this.aristas[nodo]) {
+            return this.aristas[nodo].map((nodo) => nodo.destino);
+        }
+        return [];
     }
 
     borrarNodo(nodo) {
