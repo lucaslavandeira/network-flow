@@ -4,11 +4,11 @@ class Grafo {
         this.aristas = {};
     }
 
-    agregarArista(nodo1, nodo2, peso=1) {
+    agregarArista(nodo1, nodo2, peso=1, capacidad=1) {
         if (!this.aristas[nodo1]) {
             this.aristas[nodo1] = []
         }
-        this.aristas[nodo1].push({'destino': nodo2, 'peso': peso});
+        this.aristas[nodo1].push({'destino': nodo2, 'peso': peso, 'capacidad': capacidad});
     }
 
     adyacentes(nodo) {
