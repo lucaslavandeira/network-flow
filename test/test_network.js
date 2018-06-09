@@ -1,5 +1,5 @@
 import { Grafo } from "../src/grafo";
-import { bottleneck, init_residual_graph } from "../src/network";
+import { bottleneck, init_residual_graph, update_residual_graph } from "../src/network";
 import { assert } from "chai";
 import { constants } from "perf_hooks";
 
@@ -22,5 +22,38 @@ describe("Utils de redes de flujo", () => {
         
         let residual = init_residual_graph(grafo);
         assert.deepEqual(residual.camino(1, 4), grafo.camino(1, 4));
+    });
+
+    it("Actualizar el grafo residual baja el peso directo por el bottleneck", () => {
+        let grafo = new Grafo();
+        grafo.agregarArista('1', '2', 10);
+        grafo.agregarArista('2', '3', 20);
+        grafo.agregarArista('3', '4', 5);
+        
+        
+        let camino = grafo.camino('1', '4');
+        let residual = init_residual_graph(grafo);
+        update_residual_graph(residual, camino);
+
+        assert.equal(residual.peso('1', '2'), 5);
+        assert.equal(residual.peso('2', '3'), 15);
+        assert.equal(residual.peso('3', '4'), 0);
+    });
+
+    it("Actualizar el grafo residual aumenta el peso de las aristas inversas", () => {
+        let grafo = new Grafo();
+        grafo.agregarArista('1', '2', 10);
+        grafo.agregarArista('2', '3', 20);
+        grafo.agregarArista('3', '4', 5);
+        
+        let camino = grafo.camino('1', '4');
+        let max_flow = bottleneck(grafo, camino);
+        let residual = init_residual_graph(grafo);
+        update_residual_graph(residual, camino);
+
+        assert.equal(residual.peso('2', '1'), max_flow);
+        assert.equal(residual.peso('3', '2'), max_flow);
+        assert.equal(residual.peso('4', '3'), max_flow);
+
     });
 })

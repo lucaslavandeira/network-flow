@@ -66,7 +66,22 @@ class Grafo {
                 return arista['peso'];
             }
         }
-        throw EvalError("no existe arista desde -> hasta");
+        throw EvalError("no existe arista " + desde + "-" + hasta);
+    }
+
+    actualizarPeso(desde, hasta, peso) {
+        if (!this.aristas.hasOwnProperty(desde)) {
+            throw EvalError("No existe nodo " + desde);
+        }
+
+        for(const arista of this.aristas[desde]) { 
+            if (arista['destino'] === hasta) {
+                arista['peso'] = peso;
+                return;
+            }
+        }
+
+        throw EvalError("No existe arista " + desde + "-" + hasta);
     }
 }
 
