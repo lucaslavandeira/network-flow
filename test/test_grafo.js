@@ -5,9 +5,9 @@ describe("Grafo", () => {
 
     it("Hallar camino entre puntas de la red", () => {
         let grafo = new Grafo();
-        grafo.agregarArista(1, 2, 1);
-        grafo.agregarArista(1, 3, 1);
-        grafo.agregarArista(3, 4, 1);
+        grafo.agregarArista(1, 2);
+        grafo.agregarArista(1, 3);
+        grafo.agregarArista(3, 4);
 
         let camino = grafo.camino(1, 4);
 
@@ -16,9 +16,9 @@ describe("Grafo", () => {
 
     it("Hallar adyacentes", () => {
         let grafo = new Grafo();
-        grafo.agregarArista(1, 2, 1);
-        grafo.agregarArista(1, 3, 1);
-        grafo.agregarArista(1, 4, 1);
+        grafo.agregarArista(1, 2);
+        grafo.agregarArista(1, 3);
+        grafo.agregarArista(1, 4);
 
         let ady = grafo.adyacentes(1);
         assert.include(ady, 2);
