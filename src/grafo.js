@@ -49,8 +49,10 @@ class Grafo {
     _fill_parents(nodo, padres) {
         let adyacentes = this.adyacentes(nodo);
         adyacentes.forEach(element => {
-            padres[element] = nodo;
-            this._fill_parents(element, padres);
+            if (!padres.hasOwnProperty(element)) {
+                padres[element] = nodo;
+                this._fill_parents(element, padres);
+            }
         });
     }
 
@@ -59,9 +61,7 @@ class Grafo {
             throw EvalError("No existe nodo " + desde);
         }
 
-        console.log(this.aristas[desde]);
         for(const arista of this.aristas[desde]) { 
-            console.log(arista);
             if (arista['destino'] === hasta) {
                 return arista['peso'];
             }

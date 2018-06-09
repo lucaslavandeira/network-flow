@@ -30,7 +30,6 @@ describe("Grafo", () => {
         let grafo = new Grafo();
         const peso = 50;
         grafo.agregarArista(1, 2, peso);
-        console.log(grafo.aristas);
         assert.equal(peso, grafo.peso(1, 2));
     });
 });
