@@ -43,24 +43,6 @@ class Grafo {
         return reverse_adj;
     }
 
-    static bfs(grafo, actual, result=new Grafo(), visitados=[]) {
-        if (!visitados.length) {
-            visitados.push(actual);
-        }
-        
-        let adjyacentes = _.filter(grafo.aristas[actual], 
-            (nodo) => !_.contains(visitados, nodo.destino));
-
-        _.each(adjyacentes, (nodo) => {
-            visitados.push(nodo.destino)
-            result.agregarArista(actual, nodo.destino, nodo.peso);
-        });
-        _.each(adjyacentes, (nodo) => 
-            Grafo.bfs(grafo, nodo.destino, result, visitados)
-        );
-        return result;
-    }
-
     camino(desde, hasta) {
         let padres = {}
         padres[desde] = null;
