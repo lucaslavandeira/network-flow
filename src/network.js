@@ -40,4 +40,17 @@ function update_residual_graph(grafo, camino) {
     }
 }
 
-export {bottleneck, init_residual_graph, update_residual_graph};
+function maxFlow(grafo, inicial, final) {
+    let residual = init_residual_graph(grafo);
+    let camino = residual.camino(inicial, final);
+    let flow = 0;
+    while (camino.length) {
+        flow += bottleneck(residual, camino);
+        update_residual_graph(residual, camino);
+        camino = residual.camino(inicial, final);
+    }
+    return flow;
+}
+
+
+export {bottleneck, init_residual_graph, update_residual_graph, maxFlow};

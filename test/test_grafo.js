@@ -42,4 +42,15 @@ describe("Grafo", () => {
         let camino = grafo.camino(1, 3);
         assert.equal(camino.length, 3);
     });
+
+    it("Si no existe un camino entre los nodos, devuelve lista vacía", () => {
+        let grafo = new Grafo();
+        grafo.agregarArista(1, 2);
+        grafo.agregarArista(2, 1);
+        grafo.agregarArista(2, 3);
+        grafo.agregarArista(4, 3);
+        let camino = grafo.camino(1, 4);
+        assert.equal(camino.length, 0);
+
+    });
 });

@@ -4,11 +4,16 @@ class Grafo {
         this.aristas = {};
     }
 
-    agregarArista(nodo1, nodo2, peso=1, capacidad=1) {
+    agregarArista(nodo1, nodo2, peso=1) {
         if (!this.aristas[nodo1]) {
-            this.aristas[nodo1] = []
+            this.aristas[nodo1] = [];
         }
-        this.aristas[nodo1].push({'destino': nodo2, 'peso': peso, 'capacidad': capacidad});
+
+        if (!this.aristas[nodo2]) {
+            this.aristas[nodo2] = [];
+        }
+
+        this.aristas[nodo1].push({'destino': nodo2, 'peso': peso});
     }
 
     adyacentes(nodo) {
@@ -16,19 +21,6 @@ class Grafo {
             return this.aristas[nodo].map((nodo) => nodo.destino);
         }
         return [];
-    }
-
-    borrarNodo(nodo) {
-        var reverse_adj = []
-        for(let other_node in this.aristas) {
-            for (let i = 0; i < this.aristas[other_node].length; i++) {
-                if (this.aristas[other_node][i].destino == nodo) {
-                    reverse_adj.push(other_node);
-                    this.aristas[other_node].splice(i, 1);
-                }
-            }
-        }
-        return reverse_adj;
     }
 
     camino(desde, hasta) {
@@ -41,6 +33,10 @@ class Grafo {
             return [];
         }
         
+        // No llegamos nunca hasta el nodo final, no hay camino
+        if (padres[hasta] === undefined) {
+            return [];
+        }
         padres[desde] = null;
         let result = [hasta];
         let actual = hasta;

@@ -1,5 +1,5 @@
 import { Grafo } from "../src/grafo";
-import { bottleneck, init_residual_graph, update_residual_graph } from "../src/network";
+import { bottleneck, init_residual_graph, update_residual_graph, maxFlow } from "../src/network";
 import { assert } from "chai";
 import { constants } from "perf_hooks";
 
@@ -56,4 +56,13 @@ describe("Utils de redes de flujo", () => {
         assert.equal(residual.peso('4', '3'), max_flow);
 
     });
+
+    it("Max flow de un grafo lineal", () => {
+        let grafo = new Grafo();
+        grafo.agregarArista('s', '2', 10);
+        grafo.agregarArista('2', '3', 20);
+        grafo.agregarArista('3', 't', 5);
+
+        assert.equal(maxFlow(grafo, 's', 't'), 5);
+    })
 });
