@@ -25,4 +25,12 @@ describe("Grafo", () => {
         assert.include(ady, 3);
         assert.include(ady, 4);
     })
+
+    it("Devolver el peso de una arista", () => {
+        let grafo = new Grafo();
+        const peso = 50;
+        grafo.agregarArista(1, 2, peso);
+        console.log(grafo.aristas);
+        assert.equal(peso, grafo.peso(1, 2));
+    });
 });

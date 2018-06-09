@@ -1,23 +1,10 @@
 class Grafo {
 
     constructor() {
-        this.nodos = [];
         this.aristas = {};
     }
 
-    agregarNodo(n) {
-        this.nodos.push(n);
-    }
-
     agregarArista(nodo1, nodo2, peso) {
-        if (!this.nodos.includes(nodo1)) {
-            this.nodos.push(nodo1);
-        }
-
-        if (!this.nodos.includes(nodo2)) {
-            this.nodos.push(nodo2);
-        }
-
         if (!this.aristas[nodo1]) {
             this.aristas[nodo1] = []
         }
@@ -65,6 +52,21 @@ class Grafo {
             padres[element] = nodo;
             this._fill_parents(element, padres);
         });
+    }
+
+    peso(desde, hasta) {
+        if (!this.aristas.hasOwnProperty(desde)) {
+            throw EvalError("No existe nodo " + desde);
+        }
+
+        console.log(this.aristas[desde]);
+        for(const arista of this.aristas[desde]) { 
+            console.log(arista);
+            if (arista['destino'] === hasta) {
+                return arista['peso'];
+            }
+        }
+        throw EvalError("no existe arista desde -> hasta");
     }
 }
 
