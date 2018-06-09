@@ -63,7 +63,7 @@ describe("Utils de redes de flujo", () => {
         grafo.agregarArista('2', '3', 20);
         grafo.agregarArista('3', 't', 5);
 
-        assert.equal(maxFlow(grafo, 's', 't'), 5);
+        assert.equal(maxFlow(grafo, 's', 't')['flow'], 5);
     });
 
     it("Max flow de un grafo con dos caminos", () => {
@@ -74,7 +74,7 @@ describe("Utils de redes de flujo", () => {
         grafo.agregarArista('3', 't', 20);
         grafo.agregarArista('2', 't', 10);
 
-        assert.equal(maxFlow(grafo, 's', 't'), 30);
+        assert.equal(maxFlow(grafo, 's', 't')['flow'], 30);
 
     });
 

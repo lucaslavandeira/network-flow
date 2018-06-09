@@ -16,6 +16,22 @@ class Grafo {
         this.aristas[nodo1].push({'destino': nodo2, 'peso': peso});
     }
 
+    borrarArista(desde, hasta) {
+        if (!this.aristas.hasOwnProperty(desde)) {
+            throw EvalError("No existe nodo " + desde);
+        }
+
+        for (let i = 0; i < this.aristas[desde].length; i++) {
+            const arista = this.aristas[desde][i];
+            if (arista['destino'] === hasta) {
+                this.aristas[desde].splice(i, 1);
+                return;
+            }
+        }
+
+        throw EvalError("no existe arista " + desde + "-" + hasta);
+    }
+
     adyacentes(nodo) {
         if (this.aristas[nodo]) {
             return this.aristas[nodo].map((nodo) => nodo.destino);

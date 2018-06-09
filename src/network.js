@@ -49,8 +49,28 @@ function maxFlow(grafo, inicial, final) {
         update_residual_graph(residual, camino);
         camino = residual.camino(inicial, final);
     }
-    return flow;
+    return {'flow': flow, 'grafo_residual': residual};
 }
 
+function getMaxUsedCapacity(grafo, residual) {
+    let max_used_capacity = null;
+    for (let nodo in grafo.aristas) {
+        for (let arista of grafo.aristas[nodo]) {
+            let used_capacity = residual.peso(arista['destino'], nodo);
+            let is_max = true;
+            for (let max in max_used_capacity) {
+                if (max['peso'] <= used_capacity) {
+                    is_max = false;
+                }
+            }
+            if (is_max) {
+                max_used_capacity = {'peso': used_capacity, 
+                                     'fuente': nodo, 
+                                     'destino': arista['destino']};
+            }
+        }
+    }
+    return max_used_capacity;
+}
 
-export {bottleneck, init_residual_graph, update_residual_graph, maxFlow};
+export {bottleneck, init_residual_graph, update_residual_graph, maxFlow, getMaxUsedCapacity};
