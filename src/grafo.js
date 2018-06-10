@@ -72,16 +72,6 @@ class Grafo {
             }
         
             if (!padres.hasOwnProperty(element)) {
-                let esInversa = false;
-                for (let arista of this.aristas[nodo]) {
-                    if(arista['destino'] == element && arista['inversa']) {
-                        esInversa = true;
-                        break;
-                    }
-                }
-                if (esInversa) {
-                    continue;
-                }
                 padres[element] = nodo;
                 this._fill_parents(element, padres);
             }
