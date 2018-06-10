@@ -18,7 +18,7 @@ function init_residual_graph(grafo) {
     for(let nodo in grafo.aristas) {
         for(let arista of grafo.aristas[nodo]) {
             residual.agregarArista(nodo, arista['destino'], arista['peso']);;
-            residual.agregarArista(arista['destino'], nodo, 0);
+            residual.agregarArista(arista['destino'], nodo, 0, true);
         }
     }
     return residual;
@@ -57,14 +57,13 @@ function getMaxUsedCapacity(grafo, residual) {
     for (let nodo in grafo.aristas) {
         for (let arista of grafo.aristas[nodo]) {
             let used_capacity = residual.peso(arista['destino'], nodo);
-            let is_max = true;
-            for (let max in max_used_capacity) {
-                if (max['peso'] <= used_capacity) {
-                    is_max = false;
-                }
-            }
-            if (is_max) {
-                max_used_capacity = {'peso': used_capacity, 
+            let remaining_capacity = residual.peso(nodo, arista['destino']);
+            if (!max_used_capacity ||
+                    max_used_capacity['capacidad_usada'] < used_capacity) {
+
+                max_used_capacity = {'capacidad': used_capacity + remaining_capacity, 
+                                     'capacidad_usada': used_capacity,
+                                     'capacidad_restante': remaining_capacity,
                                      'fuente': nodo, 
                                      'destino': arista['destino']};
             }

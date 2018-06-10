@@ -4,7 +4,7 @@ class Grafo {
         this.aristas = {};
     }
 
-    agregarArista(nodo1, nodo2, peso=1) {
+    agregarArista(nodo1, nodo2, peso=1, inversa=false) {
         if (!this.aristas[nodo1]) {
             this.aristas[nodo1] = [];
         }
@@ -13,7 +13,7 @@ class Grafo {
             this.aristas[nodo2] = [];
         }
 
-        this.aristas[nodo1].push({'destino': nodo2, 'peso': peso});
+        this.aristas[nodo1].push({'destino': nodo2, 'peso': peso, 'inversa': inversa});
     }
 
     borrarArista(desde, hasta) {
@@ -72,6 +72,16 @@ class Grafo {
             }
         
             if (!padres.hasOwnProperty(element)) {
+                let esInversa = false;
+                for (let arista of this.aristas[nodo]) {
+                    if(arista['destino'] == element && arista['inversa']) {
+                        esInversa = true;
+                        break;
+                    }
+                }
+                if (esInversa) {
+                    continue;
+                }
                 padres[element] = nodo;
                 this._fill_parents(element, padres);
             }
