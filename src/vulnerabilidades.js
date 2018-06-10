@@ -16,12 +16,19 @@ function encontrar_vulnerabilidades() {
     }
     const residual = max_flow['grafo_residual'];
 
-    console.log("Flow: ", max_flow['flow']);
-    console.log(inspect(residual, false, null));
+    console.log("Flujo máximo antes de sabotaje: ", max_flow['flow']);
 
     let max_cap = getMaxUsedCapacities(g, residual, CANTIDAD_EJES_A_VIGILAR);
+    const str = max_cap
+        .map((x) => [x['fuente'] + " -> " + x['destino']] + ' (' + x['capacidad_usada'] + ')')
+        .reduce((x, y) => x + ", " + y);
 
-    console.log(max_cap);
+    console.log("Aristas más relevantes", str);
+
+    max_cap.forEach((x) => g.borrarArista(x['fuente'], x['destino']));
+
+    max_flow = maxFlow(g, '0', '1');
+    console.log("Flujo máximo después del sabotaje: ", max_flow['flow']);
 }
 
 encontrar_vulnerabilidades();
