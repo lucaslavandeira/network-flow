@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha --require babel-core/register",
     "start": "babel-node --presets es2015 src/vulnerabilidades.js",
-    "build": "babel src -d dist --source-maps"
+    "build": "babel src -d dist --source-maps",
+    "report": "pdflatex informe.tex && atril informe.pdf"
   },
   "author": "",
   "license": "ISC",
