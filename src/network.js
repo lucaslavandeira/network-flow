@@ -52,24 +52,31 @@ function maxFlow(grafo, inicial, final) {
     return {'flow': flow, 'grafo_residual': residual};
 }
 
-function getMaxUsedCapacity(grafo, residual) {
-    let max_used_capacity = null;
-    for (let nodo in grafo.aristas) {
-        for (let arista of grafo.aristas[nodo]) {
-            let used_capacity = residual.peso(arista['destino'], nodo);
-            let remaining_capacity = residual.peso(nodo, arista['destino']);
-            if (!max_used_capacity ||
-                    max_used_capacity['capacidad_usada'] < used_capacity) {
+function getMaxUsedCapacities(grafo, residual, cantidad) {
+    let max_used_capacities = [];
+    while(max_used_capacities.length < cantidad) {
+        for (let nodo in grafo.aristas) {
+            for (let arista of grafo.aristas[nodo]) {
+                let used_capacity = residual.peso(arista['destino'], nodo);
+                let remaining_capacity = residual.peso(nodo, arista['destino']);
 
-                max_used_capacity = {'capacidad': used_capacity + remaining_capacity, 
-                                     'capacidad_usada': used_capacity,
-                                     'capacidad_restante': remaining_capacity,
-                                     'fuente': nodo, 
-                                     'destino': arista['destino']};
+                const min = Math.min(...max_used_capacities.map((x) => x['capacidad_usada']));
+                if (max_used_capacities.length < cantidad || used_capacity > min) {
+                    if (max_used_capacities.length == cantidad) {
+                        max_used_capacities =  max_used_capacities.filter((x) => x['capacidad_usada'] !== min);
+                    }
+                    max_used_capacities.push({
+                        'capacidad': used_capacity + remaining_capacity, 
+                        'capacidad_usada': used_capacity,
+                        'capacidad_restante': remaining_capacity,
+                        'fuente': nodo, 
+                        'destino': arista['destino']
+                    });
+                }
             }
         }
     }
-    return max_used_capacity;
+    return max_used_capacities;
 }
 
-export {bottleneck, init_residual_graph, update_residual_graph, maxFlow, getMaxUsedCapacity};
+export {bottleneck, init_residual_graph, update_residual_graph, maxFlow, getMaxUsedCapacities};
