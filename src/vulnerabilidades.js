@@ -1,4 +1,3 @@
-import { inspect } from "util";
 import { readInputFile } from "./read_input";
 import { maxFlow, getMaxUsedCapacities } from "./network";
 
@@ -9,7 +8,7 @@ const CANTIDAD_EJES_A_VIGILAR = 2;
 function encontrar_vulnerabilidades() {
     let g = readInputFile("redsecreta.map");
 
-    let max_flow = maxFlow(g, '0', '1');
+    let max_flow = maxFlow(g, FUENTE, SUMIDERO);
     if (!max_flow['flow']) {
         console.log("No hay flujo posible en el grafo");
         return;
@@ -27,7 +26,7 @@ function encontrar_vulnerabilidades() {
 
     max_cap.forEach((x) => g.borrarArista(x['fuente'], x['destino']));
 
-    max_flow = maxFlow(g, '0', '1');
+    max_flow = maxFlow(g, FUENTE, SUMIDERO);
     console.log("Flujo máximo después del sabotaje: ", max_flow['flow']);
 }
 

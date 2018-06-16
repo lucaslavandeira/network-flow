@@ -134,6 +134,16 @@ La complejidad es calculada de esta manera gracias a la suposición de que las c
 
 Analizando los flujos máximos antes y después del sabotaje podemos apreciar que el flujo no necesariamente difiere en la cantidad exacta de los flujos de las aristas saboteadas. Si borramos esas aristas, el flujo puede ser redirigido y tomar una dirección con capacidad disponible que antes no hacía porque simplemente no era conveniente.
 
+\subsection{Extensión con varias fuentes y sumideros}
+
+Se plantea la situación del mismo problema, pero ahora con una red que tenga varios nodos fuente y sumidero. Se puede ver de manera sencilla que una red con varias fuentes y sumideros es una composición de varias redes individuales de una única fuente y único sumidero.
+
+Comencemos con una red de 1 fuente, 1 sumidero. Esta red ya fue definida anteriormente, en particular restaltamos la propiedad de conservación del flujo en cada nodo interior. Agregar una fuente y un sumidero nuevo implicaría agregar esos dos nodos, más los ejes que transporten flujos entre ellos, agregando también nodos adicionales si se quiere, pero también podrían utilizarse los mismos nodos de la red original. Agregar un eje acá puede implicar simplemente aumentar la capacidad máxima del eje entre dos nodos, no necesariamente haya que agregar una nueva arista al grafo que representa la red.
+
+De esta manera se puede ver que para cualquier fuente de flujo existe al menos un camino desde una fuente a algún sumidero. La idea principal para resolver este caso, entonces, es descomponer a la red de múltiples fuentes - sumideros en caminos o subgrafos en donde haya una correspondencia 1:1, y luego aplicar el algoritmo de flujo máximo sobre cada uno, y sumar los resultados. Esta suma de flujos es el flujo máximo de la red original propuesta. Desde allí basta con detectar los dos ejes de mayor flujo.
+
+La descomposición puede resultar difícil de plantear como un algoritmo pero basta modificar la Implementación actual que busca caminos entre la única fuente y el único sumidero a buscar caminos desde \textit{cualquier} fuente hasta \textit{cualquier} sumidero, que es equivalente a la descomposición, por lo menos para el propósito que se estaría usando en este caso. El orden del algoritmo no es modificado, sigue estando acotado por la cantidad de nodos, y la capacidad mínima de la red, debido al uso de Ford-Fulkerson internamente.
+
 \subsection{Implementación}
 
 Se implementó el algoritmo propuesto (junto con Ford Fulkerson) en Nodejs. Para correr el código, asegurarse de contar con una versión de Node $>=$ 8.0, correr \textit{npm i}, y luego \textit{npm start}.
