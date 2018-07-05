@@ -4,6 +4,7 @@ import { maxFlow, getMaxUsedCapacities } from "./network";
 const FUENTE = '0';
 const SUMIDERO = '1';
 const CANTIDAD_EJES_A_VIGILAR = 2;
+const INFINITO = 999999;
 
 function encontrar_vulnerabilidades() {
     let g = readInputFile("redsecreta.map");
@@ -30,4 +31,73 @@ function encontrar_vulnerabilidades() {
     console.log("Flujo máximo después del sabotaje: ", max_flow['flow']);
 }
 
-encontrar_vulnerabilidades();
+function vulnerabilidades2() {
+    let g = readInputFile("redsecreta.map");
+
+    let max_flow = maxFlow(g, FUENTE, SUMIDERO);
+    if (!max_flow['flow']) {
+        console.log("No hay flujo posible en el grafo");
+        return;
+    }
+    let residual = max_flow['grafo_residual'];
+    console.log(max_flow['flow']);
+    let victima = getVictima(residual);
+    let ataques = [{flujo: max_flow['flow'] - victima.cap, atacada: victima}];
+    let firstLoop = true;
+    while (true) {
+        g.actualizarPeso(victima.desde, victima.hasta, INFINITO);
+        max_flow = maxFlow(g, FUENTE, SUMIDERO);
+        residual = max_flow['grafo_residual'];
+        victima = getVictima(residual);
+        let nuevoFlujo = max_flow['flow'] - victima.cap;
+        ataques.push({flujo: nuevoFlujo, atacada: victima});
+        
+        let minFlujo = ataques
+            .map((x) => x.flujo)
+            .reduce((x, y) => x < y ? x : y);
+        if (ataques.length > 2) {
+            for (let i = 0; i < ataques.length; i++) {
+                if (ataques[i].flujo === minFlujo) {
+                    ataques.splice(i, 1);
+                    break;
+                }                
+            }
+        }
+        if (!firstLoop && nuevoFlujo <= minFlujo) {
+            break;
+        }
+
+        firstLoop = false;
+    }
+
+    console.log(ataques);
+    return ataques;
+}
+
+function getVictima(residual, ataques) {
+    const cut = residual.getCut(FUENTE);
+    if (!cut.length) {
+        return;
+    }
+    let maxArista = cut
+        .map((x) => {
+            x.cap = residual.peso(x.desde, x.hasta) + residual.peso(x.hasta, x.desde); 
+            return x;
+        })
+        .filter((x) => {
+            for(let ataque in ataques) {
+                if (ataque.desde == x.desde && ataque.hasta == x.hasta) {
+                    return false;
+                }
+            }
+            if (x.cap === INFINITO) {
+                return false;
+            }
+            return true;
+        })
+        .reduce((x, y) =>  (x.cap > y.cap) ? x : y);
+    
+    return maxArista;
+}
+
+vulnerabilidades2();

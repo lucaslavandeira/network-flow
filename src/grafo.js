@@ -4,7 +4,7 @@ class Grafo {
         this.aristas = {};
     }
 
-    agregarArista(nodo1, nodo2, peso=1, inversa=false) {
+    agregarArista(nodo1, nodo2, peso=1) {
         if (!this.aristas[nodo1]) {
             this.aristas[nodo1] = [];
         }
@@ -13,7 +13,7 @@ class Grafo {
             this.aristas[nodo2] = [];
         }
 
-        this.aristas[nodo1].push({'destino': nodo2, 'peso': peso, 'inversa': inversa});
+        this.aristas[nodo1].push({'destino': nodo2, 'peso': peso});
     }
 
     borrarArista(desde, hasta) {
@@ -63,19 +63,27 @@ class Grafo {
         return result;
     }
 
-    _fill_parents(nodo, padres) {
+    _fill_parents(nodo, padres, cut=[]) {
         let adyacentes = this.adyacentes(nodo);
         for(let i = 0; i < adyacentes.length; i++) {
             const element = adyacentes[i];
             if (this.peso(nodo, element) === 0) {
+                cut.push({desde: nodo, hasta: element});
                 continue;
             }
         
             if (!padres.hasOwnProperty(element)) {
                 padres[element] = nodo;
-                this._fill_parents(element, padres);
+                this._fill_parents(element, padres, cut);
             }
         }
+    }
+
+    getCut(startNode) {
+        let padres = {}
+        let cut = [];
+        this._fill_parents(startNode, padres, cut);
+        return cut;
     }
 
     peso(desde, hasta) {
@@ -91,6 +99,18 @@ class Grafo {
         throw EvalError("no existe arista " + desde + "-" + hasta);
     }
 
+    existeArista(desde, hasta) {
+        if (!this.aristas.hasOwnProperty(desde)) {
+            return false;
+        }
+
+        for(const arista of this.aristas[desde]) { 
+            if (arista['destino'] === hasta) {
+                return true;
+            }
+        }
+        return false;
+    }
     actualizarPeso(desde, hasta, peso) {
         if (!this.aristas.hasOwnProperty(desde)) {
             throw EvalError("No existe nodo " + desde);

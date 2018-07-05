@@ -12,12 +12,15 @@ function bottleneck(grafo, camino) {
     return bottleneck;
 }
 
-// asume un grafo SIN CICLOS, es decir una red de flujos
 function init_residual_graph(grafo) {
     let residual = new Grafo();
     for(let nodo in grafo.aristas) {
         for(let arista of grafo.aristas[nodo]) {
-            residual.agregarArista(nodo, arista['destino'], arista['peso']);;
+            residual.agregarArista(nodo, arista['destino'], arista['peso']);
+            if (grafo.existeArista(arista['destino'], nodo)) {
+                continue;
+            }
+
             residual.agregarArista(arista['destino'], nodo, 0, true);
         }
     }
