@@ -80,10 +80,30 @@ class Grafo {
     }
 
     getCut(startNode) {
+        // roto roto roto muy roto todo fixme
         let padres = {}
         let cut = [];
-        this._fill_parents(startNode, padres, cut);
+        this._inCut(startNode, padres, cut);
+        
         return cut;
+    }
+
+    _inCut(startNode, padres, cut) {
+        let adyacentes = this.adyacentes(startNode);
+        for(let i = 0; i < adyacentes.length; i++) {
+            const element = adyacentes[i];
+            if (padres.hasOwnProperty(element)) {
+                continue;
+            }
+            padres[element] = startNode;
+
+            if (this.peso(element, startNode) !== 0) {
+                cut.push({desde: startNode, hasta: element});
+                continue;
+            }
+            this._fill_parents(element, padres, cut);
+
+        }
     }
 
     peso(desde, hasta) {

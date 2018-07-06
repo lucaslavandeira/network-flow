@@ -77,19 +77,4 @@ describe("Utils de redes de flujo", () => {
 
     });
 
-    it("Corte", () => {
-        let grafo = new Grafo();
-        grafo.agregarArista('s', '2', 20);
-        grafo.agregarArista('s', '3', 10);
-        grafo.agregarArista('2', '3', 30);
-        grafo.agregarArista('3', 't', 20);
-        grafo.agregarArista('2', 't', 10);
-
-        let residual = maxFlow(grafo, 's', 't')['grafo_residual'];
-
-        let cut = residual.getCut('s');
-
-        assert.deepEqual(cut, [{desde: 's', hasta: '2'}, {desde: 's', hasta: '3'}]);
-    });
-
 });

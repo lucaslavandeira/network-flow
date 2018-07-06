@@ -35,7 +35,8 @@ function vulnerabilidades2() {
     let g = readInputFile("redsecreta.map");
 
     let max_flow = maxFlow(g, FUENTE, SUMIDERO);
-    if (!max_flow['flow']) {
+    const originalFlow = max_flow['flow']
+    if (!originalFlow) {
         console.log("No hay flujo posible en el grafo");
         return;
     }
@@ -75,10 +76,11 @@ function vulnerabilidades2() {
 }
 
 function getVictima(residual, ataques) {
-    const cut = residual.getCut(FUENTE);
+    const cut = residual.getCut(SUMIDERO);
     if (!cut.length) {
         return;
     }
+    console.log(cut);
     let maxArista = cut
         .map((x) => {
             x.cap = residual.peso(x.desde, x.hasta) + residual.peso(x.hasta, x.desde); 
