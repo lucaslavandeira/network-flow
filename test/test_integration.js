@@ -10,6 +10,6 @@ describe("Tests de integracion", () => {
 
         let residual = flow['grafo_residual'];
         console.log(residual.aristas);
-        console.log(residual.getCut("1"));
+        console.log(residual.getCut("0"));
     });
 });
