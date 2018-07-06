@@ -40,8 +40,8 @@ function vulnerabilidades2() {
         console.log("No hay flujo posible en el grafo");
         return;
     }
+
     let residual = max_flow['grafo_residual'];
-    console.log(max_flow['flow']);
     let victima = getVictima(residual);
     let ataques = [{flujo: max_flow['flow'] - victima.cap, atacada: victima}];
     let firstLoop = true;
@@ -53,10 +53,11 @@ function vulnerabilidades2() {
         let nuevoFlujo = max_flow['flow'] - victima.cap;
         ataques.push({flujo: nuevoFlujo, atacada: victima});
         
-        let minFlujo = ataques
-            .map((x) => x.flujo)
-            .reduce((x, y) => x < y ? x : y);
         if (ataques.length > 2) {
+            let minFlujo = ataques
+                .map((x) => x.flujo)
+                .reduce((x, y) => x < y ? x : y);
+
             for (let i = 0; i < ataques.length; i++) {
                 if (ataques[i].flujo === minFlujo) {
                     ataques.splice(i, 1);
@@ -64,7 +65,11 @@ function vulnerabilidades2() {
                 }                
             }
         }
-        if (!firstLoop && nuevoFlujo <= minFlujo) {
+        let maxFlujo = ataques
+            .map((x) => x.flujo)
+            .reduce((x, y) => x > y ? x : y);
+
+        if (!firstLoop && nuevoFlujo >= maxFlujo) {
             break;
         }
 
@@ -76,17 +81,16 @@ function vulnerabilidades2() {
 }
 
 function getVictima(residual, ataques) {
-    const cut = residual.getCut(SUMIDERO);
+    const cut = residual.getCut(FUENTE);
     if (!cut.length) {
         return;
     }
-    console.log(cut);
     let maxArista = cut
         .map((x) => {
             x.cap = residual.peso(x.desde, x.hasta) + residual.peso(x.hasta, x.desde); 
             return x;
         })
-        .filter((x) => {
+        .filter((x) => {  // Filtro ataques que ya estén incluidos anteriormente
             for(let ataque in ataques) {
                 if (ataque.desde == x.desde && ataque.hasta == x.hasta) {
                     return false;
